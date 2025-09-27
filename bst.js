@@ -26,60 +26,47 @@ class Tree {
 
 
 
-const buildTree = (arr)=>{
-// console.log(arr.sort())
+const buildTree = (arr, start = 0, end = arr.length-1)=>{
 
-        const sortArray = arr.sort((a,b)=>a-b);
-        // console.log(sortArray)
-        const cleanArray = ()=> {  
-            for(let n = 0 ; n< sortArray.length; n++){
-                if(sortArray[n] === sortArray[n+1]){
-                    sortArray.splice((n+1), 1)
-                }
-            }
-         
-           return sortArray
-          
-         
-        
-    }
-  
-       const finalArray = cleanArray()
-    //    console.log(finalArray)
-
-        let start = 0
-        // console.log(start)
-        
-        let end = finalArray.length-1
-        // console.log(end)
 
       
+         
+        
+  
+
+    
+   
 
         if (start>end) return null;
 
         let mid = start + Math.floor((end -start)/2)
         // console.log(mid)
 
-        let root = new Node(finalArray[mid]);
+        let root = new Node(arr[mid]);
         // console.log(root)
 
 
 
-       let leftSide = finalArray.slice(start, mid)
-    //    console.log(`left`)
-    //    console.log(leftSide)
-       root.left = buildTree(leftSide)
-        // console.log(root.left)
-       let rightSide = finalArray.slice(mid+1)
-    //    console.log(`right`)
-    //    console.log(rightSide)
-        root.right = buildTree(rightSide)
-        // console.log(root.right)
+       root.left = buildTree(arr, start, mid-1)
+     
+        root.right = buildTree(arr, mid+1, end)
+      
         return root
     }
 
 
-
+const arrayCleaner = (array) =>{ 
+     array.sort((a,b)=>a-b);
+      
+        
+            for(let n = 0 ; n< array.length; n++){
+                if(array[n] === array[n+1]){
+                    array.splice((n+1), 1)
+                }
+            }
+            return array
+        }
+         
 
 
 
@@ -101,7 +88,7 @@ const buildTree = (arr)=>{
 // }
 
 const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
-const bst = new Tree(testArray)
+const bst = new Tree(arrayCleaner(testArray))
 
 // console.log(buildTree(testArray))
 
