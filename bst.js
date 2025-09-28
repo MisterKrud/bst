@@ -14,8 +14,6 @@ class Tree {
     this.root = buildTree(this.arr);
   }
 
-
-
   arrayCleaner(array) {
     if (array === null || array === undefined) array = [];
     array.sort((a, b) => a - b);
@@ -55,60 +53,104 @@ class Tree {
   }
 
   deleteItem(value) {
-   
     let currentNode = this.root;
-    let parentNode = null
-    while(currentNode.data !== value){
-         parentNode = currentNode
+    let parentNode = null;
+    while (currentNode.data !== value) {
+      parentNode = currentNode;
 
-        if(value <currentNode.data){
+      if (value < currentNode.data) {
         //    parentNode = currentNode
-            currentNode = currentNode.left
-        } else if (value > currentNode.data){
-            // parentNode = currentNode
-            currentNode = currentNode.right
-        } else {return 'Node not found in leafNode'}
-      
+        currentNode = currentNode.left;
+      } else if (value > currentNode.data) {
+        // parentNode = currentNode
+        currentNode = currentNode.right;
+        // if (currentNode.right === value) {
+        //   parentNode = currentNode;
+        // }
+      } else {
+        return "Node not found in leafNode";
+      }
     }
     //Delete node if leaf
-        if(currentNode.left === null && currentNode.right === null){
-            console.log(currentNode.data)
-            console.log(parentNode)
-            if(parentNode.left === currentNode){
-                parentNode.left = null
-            }
-            if(parentNode.right === currentNode){
-                parentNode.right = null
-            }
-          currentNode = null  
-          return this.root
-         }
-
-
-         //delete node with one child
-         if(currentNode.left ){
-            console.log(currentNode)
-         let childNodeLeft = currentNode.left
-          if(childNodeLeft.left === null && childNodeLeft.right === null){
-            currentNode.data = childNodeLeft.data
-            currentNode.left = null
-            childNodeLeft = null
-         }
-        
-       
-        } else if(currentNode.right && parentNode.data < value){
-            let childNodeRight = currentNode.right
-        if(childNodeRight.left === null && childNodeRight.left === null){
-            currentNode.data = childNodeRight.data
-            currentNode.right = null
-            childNodeRight = null
-        }
+    if (currentNode.left === null && currentNode.right === null) {
+      console.log(currentNode.data);
+      console.log(parentNode);
+      if (parentNode.left === currentNode) {
+        parentNode.left = null;
+      }
+      if (parentNode.right === currentNode) {
+        parentNode.right = null;
+      }
+      currentNode = null;
+      return this.root;
     }
-         }
-        
 
- 
-  
+    //delete node with one child
+    if (currentNode.left) {
+      //   console.log(currentNode);
+      let childNodeLeft = currentNode.left;
+      if (childNodeLeft.left === null && childNodeLeft.right === null) {
+        currentNode.data = childNodeLeft.data;
+        currentNode.left = null;
+        childNodeLeft = null;
+      }
+    } else if (currentNode.right) {
+      let childNodeRight = currentNode.right;
+      if (childNodeRight.left === null && childNodeRight.left === null) {
+        currentNode.data = childNodeRight.data;
+        currentNode.right = null;
+        childNodeRight = null;
+      }
+    }
+
+    //delete node with children
+    if (currentNode.right && currentNode.left) {
+      let subRoot = currentNode;
+      // console.log(currentNode)
+      currentNode = currentNode.right;
+
+      while (currentNode.left.left !== null) {
+        currentNode = currentNode.left;
+      }
+      const successorParent = currentNode
+      let successor = currentNode.left.left
+      console.log(`parent: ${parentNode.data}`)
+      console.log(`subRoot: ${subRoot.data}`)
+      console.log(`s-parent: ${successorParent.data}`)
+      console.log(`successor: ${currentNode.left.data}`)
+      
+      
+    const deletionNodeData = subRoot.data;
+    const successorData = currentNode.left.data;
+
+    subRoot.data = currentNode.left.data;
+    // successor.data = deletionNodeData
+    successorParent.left = currentNode.left.right
+
+
+    // subRoot.data = successorData
+    // currentNode.data = deletionNodeData
+    //   if(currentNode.right){
+    //     subRoot.right = currentNode.right
+    //   }
+    //   if(currentNode.left){
+    //     subRoot.left = currentNode.left
+    //   }
+    //  let thisNode = this.root
+    //   while(thisNode != currentNode){
+    //     if(thisNode.left === currentNode){
+    //         thisNode.left = currentNode.left
+    //     } else if(thisNode.right === currentNode){
+    //         thisNode.right = currentNode.right
+    //     }
+        
+    // }
+    //     thisNode = null
+    //  this.deleteItem(deletionNodeData)
+    //   parentNode.right === subRoot ? parentNode.right = successor : parentNode.left = successor;
+      
+    }
+  }
 }
 
 
@@ -147,7 +189,7 @@ const prettyPrintBorders = (node, prefix = "", isLeft = true) => {
     console.log()
 }
 
-const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 200];
+const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67,66, 325, 6345];
 const bst = new Tree(testArray);
 // const blankTree = new Tree();
 
@@ -173,9 +215,9 @@ const bst = new Tree(testArray);
 
 // bst.deleteItem(7)
 // // blankTree.deleteItem(6)
-// prettyPrintBorders(bst.root);
+prettyPrintBorders(bst.root);
 // prettyPrintBorders(blankTree.root);
 // bst.deleteItem(324)
-// bst.deleteItem(324)
+bst.deleteItem(66)
 
 prettyPrintBorders(bst.root);
