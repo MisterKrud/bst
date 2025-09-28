@@ -55,24 +55,45 @@ class Tree {
   deleteItem(value) {
     let currentNode = this.root;
     let parentNode = null;
-    while (currentNode.data !== value) {
-      parentNode = currentNode;
 
-      if (value < currentNode.data) {
-        //    parentNode = currentNode
-        currentNode = currentNode.left;
-      } else if (value > currentNode.data) {
-        // parentNode = currentNode
-        currentNode = currentNode.right;
+    const getCurrentNode = (value) => {
+    let traversal = this.root
+  
+
+    while (traversal.data !== value) {
+      parentNode = traversal;
+
+      if (value < traversal.data) {
+      
+           parentNode = traversal
+        traversal = traversal.left;
+      } else if (value > traversal.data) {
+      
+        parentNode = traversal
+        traversal = traversal.right;
         // if (currentNode.right === value) {
         //   parentNode = currentNode;
         // }
       } else {
         return "Node not found in leafNode";
       }
+       
     }
+    console.log(`getCurrentNode result:`)
+    console.log(traversal.data)
+    currentNode = traversal
+   return currentNode
+   
+    }
+
+   
     //Delete node if leaf
+    console.log(`Start with leaf`)
+
+   getCurrentNode(value)
+    console.log(currentNode.data)
     if (currentNode.left === null && currentNode.right === null) {
+        console.log(`Deleting leaf:${value}`)
       console.log(currentNode.data);
       console.log(parentNode);
       if (parentNode.left === currentNode) {
@@ -82,58 +103,132 @@ class Tree {
         parentNode.right = null;
       }
       currentNode = null;
+      console.log(`-----------complete--------------`)
+     return  prettyPrintBorders(this.root)
       return this.root;
     }
 
     //delete node with one child
-    if (currentNode.left) {
-      //   console.log(currentNode);
-      let childNodeLeft = currentNode.left;
-      if (childNodeLeft.left === null && childNodeLeft.right === null) {
-        currentNode.data = childNodeLeft.data;
-        currentNode.left = null;
-        childNodeLeft = null;
-      }
+ console.log(`Moving to one child node`)
+
+   
+    console.log(`current`)
+    console.log(currentNode.value)
+
+
+    if (!currentNode.left || !currentNode.right) {
+getCurrentNode(value)
+
+        if(currentNode.left){
+      
+  
+         console.log(`deleting node with only left child: ${value}`)
+         console.log(`Current: ${currentNode.data}`)
+         console.log(`Parent: ${parentNode.data}`)
+         if(parentNode.left === currentNode ){
+         parentNode.left = currentNode.left
+         } else if(parentNode.right === currentNode ){
+         parentNode.right = currentNode.left
+         } 
+      
+
     } else if (currentNode.right) {
-      let childNodeRight = currentNode.right;
-      if (childNodeRight.left === null && childNodeRight.left === null) {
-        currentNode.data = childNodeRight.data;
-        currentNode.right = null;
-        childNodeRight = null;
-      }
+         console.log(`deleting node with only right child: ${value}`)
+         console.log(`Current: ${currentNode.data}`)
+         console.log(`Parent: ${parentNode.data}`)
+         if(parentNode.left === currentNode ){
+         parentNode.left = currentNode.right
+         } else if(parentNode.right === currentNode ){
+         parentNode.right = currentNode.right
+         } 
+         
+    
     }
+    console.log(`-----------complete--------------`)
+    return prettyPrintBorders(this.root)
+     return this.root;
+}
 
     //delete node with children
+    console.log(`Moving to nodes with both children`)
     if (currentNode.right && currentNode.left) {
+        console.log(`pre function currentNode`)
+        console.log(currentNode.data)
+        getCurrentNode(value)
+        console.log(`Deleting subtree at: ${value}`)
+        console.log(`Parent: ${parentNode.data}`)
+        let successorParent
       let subRoot = currentNode;
-      // console.log(currentNode)
+      let successor
       currentNode = currentNode.right;
+      console.log(`Right branch: ${currentNode.data}`)
 
-     try { while (currentNode.left.left !== null) {
-        currentNode = currentNode.left;
-      }
-      const successorParent = currentNode
+if(!currentNode.left){
+    subRoot.right = currentNode.right
+    subRoot.data = currentNode.data
     
-      console.log(`parent: ${parentNode.data}`)
-      console.log(`subRoot: ${subRoot.data}`)
-      console.log(`s-parent: ${successorParent.data}`)
-      console.log(`successor: ${currentNode.left.data}`)
+} else {
+      while(currentNode.left){
+        successorParent = currentNode
+        currentNode = currentNode.left
+        successor = currentNode
+      }
+    
+      console.log(currentNode)
+      console.log(`successor: ${successor.data}`)
+      console.log(`successorParent: ${successorParent.data}`)
+    //   console.log(currentNode.data)
+    //   console.log(successor.data)
+    //   console.log(parentNode.data)
+    //   console.log(subRoot.data)
+
+      subRoot.data = successor.data
+      successorParent.left = null
+      console.log(`----------`)
       
-       subRoot.data = currentNode.left.data;
-    // successor.data = deletionNodeData
-    successorParent.left = currentNode.left.right
-       }
+    }
+
+     
+    
+
+//      try { while (currentNode.left.left !== null) {
+//         currentNode = currentNode.left;
+//       }
+//       const successorParent = currentNode
+    
+//       console.log(`parent: ${parentNode.data}`)
+//       console.log(`subRoot: ${subRoot.data}`)
+//       console.log(`s-parent: ${successorParent.data}`)
+//       console.log(`successor: ${currentNode.left.data}`)
+      
+//        subRoot.data = currentNode.left.data;
+//     // successor.data = deletionNodeData
+//     successorParent.left = currentNode.left.right
+//     console.log(`leftleft`)
+//        }
     
 
     
 
    
-    catch {while(currentNode.left){
-        currentNode = currentNode.left
-    }
-        subRoot.data = currentNode.data
-        subRoot.right = currentNode.right
-    }
+//     catch {while(currentNode.left){
+//         currentNode = currentNode.left
+//     }
+//     console.log(`current ${currentNode.data}`)
+//     console.log(`current right:`) 
+//     console.log(currentNode.right)
+//         subRoot.data = currentNode.data
+//         subRoot.right = currentNode.right
+//         console.log(`left`)
+//     }
+//     finally {console.log(`current ${currentNode.data}`)
+//     console.log(`current right:`) 
+//     console.log(currentNode.right)
+
+   
+
+// }
+  
     // subRoot.data = successorData
     // currentNode.data = deletionNodeData
     //   if(currentNode.right){
@@ -154,8 +249,11 @@ class Tree {
     //     thisNode = null
     //  this.deleteItem(deletionNodeData)
     //   parentNode.right === subRoot ? parentNode.right = successor : parentNode.left = successor;
-      
+    console.log(`-----------complete--------------`)
+    return prettyPrintBorders(this.root)   
+    return this.root;
     }
+     prettyPrintBorders(this.root)
   }
 }
 
@@ -196,8 +294,8 @@ const prettyPrintBorders = (node, prefix = "", isLeft = true) => {
 }
 
 const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67,66, 325, 6345];
-const biggerArray = [44, 3, 40, 82, 38, 17, 91, 10, 33, 89, 11, 48, 39, 58, 88, 76, 31, 73, 46, 98]
-const bst = new Tree(testArray);
+const biggerArray = [44, 3, 40, 4, 82, 38, 17, 91, 10, 33, 89, 11, 48, 39, 58, 88, 76, 31, 73, 46, 98,9,11, 12,16]
+const bst = new Tree(biggerArray);
 const binTree = new Tree(biggerArray)
 // const blankTree = new Tree();
 
@@ -226,7 +324,38 @@ const binTree = new Tree(biggerArray)
 prettyPrintBorders(bst.root);
 // prettyPrintBorders(blankTree.root);
 // bst.deleteItem(324)
-bst.deleteItem(4)
+// bst.deleteItem(4)
+// bst.deleteItem(73)
+// bst.deleteItem(3)
+// bst.deleteItem(17)
 
-prettyPrintBorders(bst.root);
-prettyPrintBorders(binTree.root);
+function removeLeaves(){
+    bst.deleteItem(4)
+    bst.deleteItem(89)
+    bst.deleteItem(58)
+    bst.deleteItem(17)
+}
+
+function removeOneChild(){
+    bst.deleteItem(3)
+    bst.deleteItem(40)
+    bst.deleteItem(33)
+    bst.deleteItem(10)
+}
+
+// removeLeaves()
+removeOneChild()
+bst.deleteItem(38)
+bst.deleteItem(31)
+
+const removeSubRoot = (() => {
+    bst.deleteItem(88)
+    bst.deleteItem(12)
+})()
+
+// bst.deleteItem(46)
+
+// bst.deleteItem(89)
+
+
+//copying left does not get all nodes to the left - that's the issue!
