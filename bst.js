@@ -109,25 +109,31 @@ class Tree {
       // console.log(currentNode)
       currentNode = currentNode.right;
 
-      while (currentNode.left.left !== null) {
+     try { while (currentNode.left.left !== null) {
         currentNode = currentNode.left;
       }
       const successorParent = currentNode
-      let successor = currentNode.left.left
+    
       console.log(`parent: ${parentNode.data}`)
       console.log(`subRoot: ${subRoot.data}`)
       console.log(`s-parent: ${successorParent.data}`)
       console.log(`successor: ${currentNode.left.data}`)
       
-      
-    const deletionNodeData = subRoot.data;
-    const successorData = currentNode.left.data;
-
-    subRoot.data = currentNode.left.data;
+       subRoot.data = currentNode.left.data;
     // successor.data = deletionNodeData
     successorParent.left = currentNode.left.right
+       }
+    
 
+    
 
+   
+    catch {while(currentNode.left){
+        currentNode = currentNode.left
+    }
+        subRoot.data = currentNode.data
+        subRoot.right = currentNode.right
+    }
     // subRoot.data = successorData
     // currentNode.data = deletionNodeData
     //   if(currentNode.right){
@@ -190,7 +196,9 @@ const prettyPrintBorders = (node, prefix = "", isLeft = true) => {
 }
 
 const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67,66, 325, 6345];
+const biggerArray = [44, 3, 40, 82, 38, 17, 91, 10, 33, 89, 11, 48, 39, 58, 88, 76, 31, 73, 46, 98]
 const bst = new Tree(testArray);
+const binTree = new Tree(biggerArray)
 // const blankTree = new Tree();
 
 // prettyPrintBorders(bst.root);
@@ -218,6 +226,7 @@ const bst = new Tree(testArray);
 prettyPrintBorders(bst.root);
 // prettyPrintBorders(blankTree.root);
 // bst.deleteItem(324)
-bst.deleteItem(66)
+bst.deleteItem(4)
 
 prettyPrintBorders(bst.root);
+prettyPrintBorders(binTree.root);
