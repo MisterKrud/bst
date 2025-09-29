@@ -144,6 +144,27 @@ class Tree {
     }
     prettyPrintBorders(this.root);
   }
+
+  find(value) {
+    let currentNode = this.root;
+
+     try {while (currentNode.data !== value) {
+        
+
+        if (value < currentNode.data) {
+          
+          currentNode = currentNode.left;
+        } else if (value > currentNode.data) {
+          
+          currentNode = currentNode.right;
+        } 
+        
+      }
+    } catch { return (`${value} not found in tree`)}
+    
+    return currentNode
+  }
+  
 }
 
 
@@ -218,32 +239,36 @@ prettyPrintBorders(bst.root);
 // bst.deleteItem(3)
 // bst.deleteItem(17)
 
-function removeLeaves(){
-    bst.deleteItem(4)
-    bst.deleteItem(89)
-    bst.deleteItem(58)
-    bst.deleteItem(17)
-}
+// function removeLeaves(){
+//     bst.deleteItem(4)
+//     bst.deleteItem(89)
+//     bst.deleteItem(58)
+//     bst.deleteItem(17)
+// }
 
-function removeOneChild(){
-    bst.deleteItem(3)
-    bst.deleteItem(40)
-    bst.deleteItem(33)
-    bst.deleteItem(10)
-}
+// function removeOneChild(){
+//     bst.deleteItem(3)
+//     bst.deleteItem(40)
+//     bst.deleteItem(33)
+//     bst.deleteItem(10)
+// }
 
-// removeLeaves()
-removeOneChild()
-bst.deleteItem(38)
-bst.deleteItem(31)
+// // removeLeaves()
+// removeOneChild()
+// bst.deleteItem(38)
+// bst.deleteItem(31)
 
-const removeSubRoot = (() => {
-    bst.deleteItem(88)
-    bst.deleteItem(12)
-})()
+// const removeSubRoot = (() => {
+//     bst.deleteItem(88)
+//     bst.deleteItem(12)
+// })()
 
-bst.deleteItem(73)
-bst.deleteItem(39)
+// bst.deleteItem(73)
+// bst.deleteItem(39)
+
+
+console.log(bst.find(76))
+console.log(bst.find(0))
 
 // bst.deleteItem(89)
 
