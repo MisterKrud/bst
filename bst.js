@@ -60,30 +60,11 @@ class Tree {
     let currentNode = this.root;
     let parentNode 
 
-    // const getCurrentNode = (value) => {
-    //   let traversal = this.root;
-
-    //   while (traversal.data !== value) {
-    //     parentNode = traversal;
-
-    //     if (value < traversal.data) {
-    //       parentNode = traversal;
-    //       traversal = traversal.left;
-    //     } else if (value > traversal.data) {
-    //       parentNode = traversal;
-    //       traversal = traversal.right;
-    //     } else {
-    //       return "Node not found in leafNode";
-    //     }
-    //   }
-    //   currentNode = traversal;
-     
-    // };
-
     //Delete node if leaf
 
-    this.find(value);
- 
+    const nodeValue = this.find(value)
+    currentNode = nodeValue.currentNode
+    parentNode = nodeValue.parentNode
     if (currentNode.left === null && currentNode.right === null) {
       if (parentNode.left === currentNode) {
         parentNode.left = null;
@@ -154,7 +135,6 @@ class Tree {
     let parentNode = this.parent
 
      try {while (currentNode.data !== value) {
-        
 
         if (value < currentNode.data) {
           parentNode = currentNode
@@ -162,14 +142,42 @@ class Tree {
         } else if (value > currentNode.data) {
           parentNode = currentNode
           currentNode = currentNode.right;
-        } 
-        
+        }    
       }
     } catch { return (`${value} not found in tree`)}
     
-    return currentNode
+    return {currentNode, parentNode}
   }
   
+  levelOrderForEach(callback){
+    prettyPrintBorders(this.root)
+        let current = this.root;
+    const queueArray = [current]
+
+    
+        
+        while(queueArray.length>=1){
+        console.log(queueArray[0].data)
+       if(queueArray[0].left !== null && queueArray[0].right !== null){
+        queueArray.push(queueArray[0].left, queueArray[0].right);
+        //  queueArray.shift(queueArray[0])
+       } else
+       if(queueArray[0].left !==null&&queueArray[0].right === null){
+        queueArray.push(queueArray[0].left)
+      
+       } else
+       if(queueArray[0].right !== null && queueArray[0].left === null){
+        queueArray.push(queueArray[0].right)
+         
+       }
+        
+         queueArray.shift(queueArray[0])
+        
+        }
+    
+  }
+
+
 }
 
 
@@ -237,6 +245,9 @@ const binTree = new Tree(biggerArray)
 // bst.deleteItem(7)
 // // blankTree.deleteItem(6)
 prettyPrintBorders(bst.root);
+// console.log(bst.levelOrderForEach())
+
+
 // prettyPrintBorders(blankTree.root);
 // bst.deleteItem(324)
 // bst.deleteItem(4)
@@ -251,6 +262,8 @@ prettyPrintBorders(bst.root);
 //     bst.deleteItem(17)
 // }
 
+// console.log(bst.levelOrderForEach())
+
 // function removeOneChild(){
 //     bst.deleteItem(3)
 //     bst.deleteItem(40)
@@ -258,22 +271,28 @@ prettyPrintBorders(bst.root);
 //     bst.deleteItem(10)
 // }
 
-// // removeLeaves()
 // removeOneChild()
-// bst.deleteItem(38)
-// bst.deleteItem(31)
 
-const removeSubRoot = (() => {
-    bst.deleteItem(88)
-    bst.deleteItem(12)
-})()
+// removeLeaves()
+console.log(bst.levelOrderForEach())
+
+bst.deleteItem(38)
+bst.deleteItem(31)
+
+console.log(bst.levelOrderForEach())
+
+// const removeSubRoot = (() => {
+//     bst.deleteItem(88)
+//     bst.deleteItem(12)
+// })()
 
 bst.deleteItem(73)
-bst.deleteItem(39)
+// bst.deleteItem(39)
 
+console.log(bst.levelOrderForEach())
 
-console.log(bst.find(76))
-console.log(bst.find(0))
+// console.log(bst.find(76))
+// console.log(bst.find(0))
 
 // bst.deleteItem(89)
 
