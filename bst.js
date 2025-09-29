@@ -5,6 +5,7 @@ class Node {
     this.data = data;
     this.left = null;
     this.right = null;
+   
   }
 }
 
@@ -12,7 +13,10 @@ class Tree {
   constructor(arr) {
     this.arr = this.arrayCleaner(arr);
     this.root = buildTree(this.arr);
+     
   }
+
+#parent = null;
 
   arrayCleaner(array) {
     if (array === null || array === undefined) array = [];
@@ -54,31 +58,31 @@ class Tree {
 
   deleteItem(value) {
     let currentNode = this.root;
-    let parentNode = null;
+    let parentNode 
 
-    const getCurrentNode = (value) => {
-      let traversal = this.root;
+    // const getCurrentNode = (value) => {
+    //   let traversal = this.root;
 
-      while (traversal.data !== value) {
-        parentNode = traversal;
+    //   while (traversal.data !== value) {
+    //     parentNode = traversal;
 
-        if (value < traversal.data) {
-          parentNode = traversal;
-          traversal = traversal.left;
-        } else if (value > traversal.data) {
-          parentNode = traversal;
-          traversal = traversal.right;
-        } else {
-          return "Node not found in leafNode";
-        }
-      }
-      currentNode = traversal;
+    //     if (value < traversal.data) {
+    //       parentNode = traversal;
+    //       traversal = traversal.left;
+    //     } else if (value > traversal.data) {
+    //       parentNode = traversal;
+    //       traversal = traversal.right;
+    //     } else {
+    //       return "Node not found in leafNode";
+    //     }
+    //   }
+    //   currentNode = traversal;
      
-    };
+    // };
 
     //Delete node if leaf
 
-    getCurrentNode(value);
+    this.find(value);
  
     if (currentNode.left === null && currentNode.right === null) {
       if (parentNode.left === currentNode) {
@@ -94,7 +98,7 @@ class Tree {
 
     //delete node with one child
     if (!currentNode.left || !currentNode.right) {
-      getCurrentNode(value);
+      this.find(value);
 
       if (currentNode.left) {
         if (parentNode.left === currentNode) {
@@ -116,7 +120,7 @@ class Tree {
     //delete node with children
    
     if (currentNode.right && currentNode.left) {
-      getCurrentNode(value);
+      this.find(value);
 
       let successorParent;
       let subRoot = currentNode;
@@ -147,15 +151,16 @@ class Tree {
 
   find(value) {
     let currentNode = this.root;
+    let parentNode = this.parent
 
      try {while (currentNode.data !== value) {
         
 
         if (value < currentNode.data) {
-          
+          parentNode = currentNode
           currentNode = currentNode.left;
         } else if (value > currentNode.data) {
-          
+          parentNode = currentNode
           currentNode = currentNode.right;
         } 
         
@@ -258,13 +263,13 @@ prettyPrintBorders(bst.root);
 // bst.deleteItem(38)
 // bst.deleteItem(31)
 
-// const removeSubRoot = (() => {
-//     bst.deleteItem(88)
-//     bst.deleteItem(12)
-// })()
+const removeSubRoot = (() => {
+    bst.deleteItem(88)
+    bst.deleteItem(12)
+})()
 
-// bst.deleteItem(73)
-// bst.deleteItem(39)
+bst.deleteItem(73)
+bst.deleteItem(39)
 
 
 console.log(bst.find(76))
