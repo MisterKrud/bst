@@ -191,7 +191,9 @@ class Tree {
 }
  preOrderForEach(callback, node = this.root){
           
-         
+         if(callback === undefined){
+        throw new Error ("Argument must contain a function")
+    } else {
             if(node === null){
                 
            return "preorder"
@@ -200,12 +202,16 @@ class Tree {
           this.preOrderForEach(callback, node.left);
            
            this.preOrderForEach(callback, node.right)
+        }
        
 
 }
 
 
 postOrderForEach(callback, node = this.root){
+if(callback === undefined){
+        throw new Error ("Argument must contain a function")
+    } else {
  if(node === null){
                 return "postorder"
             }
@@ -215,12 +221,15 @@ postOrderForEach(callback, node = this.root){
             this.postOrderForEach(callback, node.right)
             console.log(callback(node))
            
-     
+        }
 
 
 }
 
 inOrderForEach(callback, node = this.root){
+    if(callback === undefined){
+        throw new Error ("Argument must contain a function")
+    } else {
  if(node === null){
                 return "inorder"
             }
@@ -231,7 +240,7 @@ inOrderForEach(callback, node = this.root){
                 console.log(callback(node))
            this.inOrderForEach(callback, node.right);
 
-
+        }
 
 }
 
@@ -518,10 +527,10 @@ prettyPrintBorders(bst.root);
 //     return node.data
 // }))
 // console.log(`====================*2--------------------`)
-console.log(bst.postOrderForEach(node =>{
-    return node.data
-}))
-
+// console.log(bst.postOrderForEach(node =>{
+//     return node.data
+// }))
+console.log(bst.inOrderForEach())
 
 
 // console.log(bst.postOrderForEach(node =>{
