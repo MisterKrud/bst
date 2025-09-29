@@ -163,36 +163,79 @@ class Tree {
     } else {
         
         while(queueArray.length>=1){
-        // console.log(queueArray[0].data)
-        // this.list.append(queueArray[0].data)
+     
 
-        console.log(callback(queueArray[0].data))
+        console.log(callback(queueArray[0]))
        if(queueArray[0].left !== null && queueArray[0].right !== null){
         queueArray.push(queueArray[0].left, queueArray[0].right);
-        //  queueArray.shift(queueArray[0])
+       
        } else
        if(queueArray[0].left !==null&&queueArray[0].right === null){
-        queueArray.push(queueArray[0].left)
-      
+        queueArray.push(queueArray[0].left)    
        } else
        if(queueArray[0].right !== null && queueArray[0].left === null){
-        queueArray.push(queueArray[0].right)
-         
+        queueArray.push(queueArray[0].right)       
        }
         
          queueArray.shift(queueArray[0])
         
         }
+
+
+       
 // console.log(queueArray)
 //        console.log(this.list.toString())
 //        console.log(this.list.size())
     
   }
 }
+ preOrderForEach(callback, node = this.root){
+          
+         
+            if(node === null){
+                
+           return "preorder"
+            }
+            console.log(callback(node))
+          this.preOrderForEach(callback, node.left);
+           
+           this.preOrderForEach(callback, node.right)
+       
+
+}
+
+
+postOrderForEach(callback, node = this.root){
+ if(node === null){
+                return "postorder"
+            }
+         
+       
+           this.postOrderForEach(callback, node.left)
+            this.postOrderForEach(callback, node.right)
+            console.log(callback(node))
+           
+     
 
 
 }
 
+inOrderForEach(callback, node = this.root){
+ if(node === null){
+                return "inorder"
+            }
+         
+          
+          
+           this.inOrderForEach(callback, node.left)
+                console.log(callback(node))
+           this.inOrderForEach(callback, node.right);
+
+
+
+}
+
+}
 
 
 
@@ -436,7 +479,7 @@ const binTree = new Tree(biggerArray)
 // console.log(bst.levelOrderForEach())
 
 
-// prettyPrintBorders(blankTree.root);
+prettyPrintBorders(bst.root);
 // bst.deleteItem(324)
 // bst.deleteItem(4)
 // bst.deleteItem(73)
@@ -462,11 +505,29 @@ const binTree = new Tree(biggerArray)
 // removeOneChild()
 
 // removeLeaves()
-console.log(bst.levelOrderForEach(item => {
-    item++
-    return item
+// console.log(bst.levelOrderForEach(item => {
+//     item++
+//     return item
+// }))
+
+// console.log(bst.inOrderForEach(node => {
+//     return node.data
+// }))
+// console.log(`====================*2--------------------`)
+// console.log(bst.postOrderForEach(node =>{
+//     return node.data
+// }))
+// console.log(`====================*2--------------------`)
+console.log(bst.postOrderForEach(node =>{
+    return node.data
 }))
 
+
+
+// console.log(bst.postOrderForEach(node =>{
+//  return   node.data*2
+    
+// }))
 // bst.deleteItem(38)
 // bst.deleteItem(31)
 
