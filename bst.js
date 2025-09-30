@@ -267,20 +267,24 @@ isBalanced(){
  this.levelOrderForEach(node =>{
   if(node.left && node.right){
   h = (this.height(node.left.data)-this.height(node.right.data))
-  } if (!node.right && node.left){
+   console.log(node.data+' : '+h)
+  } if (!node.right && node.left || !node.left && node.right){
+    h=this.height(node.data)
   console.log(node.data+' : '+h)
-  } if(!node.left && node.right){
-      console.log(node.data+' : '+h)
-  }
+  } 
   b < h ? b=h : b
  })
 
-return b>=2? false : true
+return -2>=b>=2? false : true
    
 
   }
  
-
+rebalance(){
+  const newArray = []
+  this.inOrderForEach(node=> newArray.push(node.data));
+  this.root = buildTree(newArray)
+}
  
  
 
@@ -361,6 +365,7 @@ const binTree = new Tree(biggerArray)
 
 prettyPrintBorders(bst.root);
 console.log(bst.isBalanced())
+
 // bst.deleteItem(324)
 // bst.deleteItem(4)
 // bst.deleteItem(73)
@@ -417,6 +422,10 @@ bst.deleteItem(31)
 
 console.log(bst.isBalanced())
 
+
+bst.rebalance()
+prettyPrintBorders(bst.root);
+console.log(bst.isBalanced())
 // console.log(bst.levelOrderForEach())
 
 // // const removeSubRoot = (() => {
