@@ -246,27 +246,43 @@ inOrderForEach(callback, node = this.root){
 
 
 height(value, node = this.find(value).currentNode){
- 
   let h =0
- 
-  
  this.levelOrderForEach(item => {
  let d = this.depth(item.data, node)
 if(h<d){
     h=d
   }
-
-  
-
   }, node)
   return h
 }
 
 depth(value, node = this.root){
 this.find(value, node)
-
 return this.#n
 }
+
+isBalanced(){
+  let b=0
+  let h
+ this.levelOrderForEach(node =>{
+  if(node.left && node.right){
+  h = (this.height(node.left.data)-this.height(node.right.data))
+  } if (!node.right && node.left){
+  console.log(node.data+' : '+h)
+  } if(!node.left && node.right){
+      console.log(node.data+' : '+h)
+  }
+  b < h ? b=h : b
+ })
+
+return b>=2? false : true
+   
+
+  }
+ 
+
+ 
+ 
 
 }
 
@@ -308,178 +324,6 @@ const prettyPrintBorders = (node, prefix = "", isLeft = true) => {
 
 
 
-// const linkedList = () => {
-//   let n = 0;
-
-//   let preNode = node();
-
-//   const append = (value) => {
-//     const newNode = node(value);
-//     newNode.index = n;
-//     const current = iterate();
-
-//     if (current.next === null) {
-//       current.next = newNode;
-//     }
-//     n++;
-//     return newNode;
-//   };
-
-//   const iterate = () => {
-//     let current = preNode;
-//     while (current.next) {
-//       current = current.next;
-//     }
-//     return current;
-//   };
-
-
-//   const prepend = (value) => {
-//     insertAt(value, 0);
-//   };
-
-
-//   const insertAt = (value, index) => {
-//     const newNode = node(value);
-//     newNode.index = index;
-//     const rightNode = at(index);
-//     let leftNode = at(index - 1);
-//     if (leftNode == null) {
-//       leftNode = preNode;
-//     }
-//     let current = newNode;
-
-//     leftNode.next = newNode;
-//     newNode.next = rightNode;
-
-//     while (current.next) {
-//       current = current.next;
-//       current.index++;
-//     }
-//     n++
-//   };
-
-
-//   const size = () => n;
-
-
-//   const head = () => {
-//     const headNode = preNode.next;
-//     return headNode.value;
-//   };
-
-
-//   const tail = () => {
-//     const current = iterate();
-//     if (current.next === null) {
-//       const tailNode = current;
-//       return tailNode;
-//     }
-//   };
-
-  
-//   const at = (index) => {
-//     let current = preNode;
-//     while (current.next) {
-//       current = current.next;
-//       if (current.index === index) {
-//         // const atNode = current;
-//         return current;
-//       }
-//     }
-//   };
-
-
-//   const pop = () =>{
-//     remove(n)
-//   }
-
-
-//   const remove = (index) => {
-//     if(index<0 ||index >n) return null
-//     let leftNode = at(index - 1);
-//     let rightNode = at(index + 1);
-//     if (index != n && index !=0) {
-      
-//       console.log(`index: ${index}`);
-//       leftNode.next = rightNode;
-      
-//     } else if(index===0){
-//       preNode.next = rightNode
-//     }
-//     else if(index===n) {
-//       leftNode.next = null;
-     
-//     }
-//     let current = rightNode;
-//       while (current) {
-//         current.index = current.index - 1;
-//         current = current.next;
-      
-//     }
-//     n--
-//   };
-
-//   const contains = (value) => {
-//     let current = preNode;
-//     while (current.next) {
-//       current = current.next;
-//       if (current.value === value) {
-//         return true;
-//       }
-//     }
-//     return false;
-//   };
-
-//   const find = (value) => {
-//     let current = preNode;
-//     while (current.next) {
-//       current = current.next;
-//       if (current.value === value) {
-//         const matchingNode = current;
-//         return matchingNode.index;
-//       }
-//     }
-//     return null;
-//   };
-
-//   const toString = () => {
-//     let stringChain = "";
-//     let current = preNode.next;
-//     while (current) {
-//       let nodeValue = current.value;
-//       stringChain = stringChain.concat(
-//         `( ${nodeValue} ) -> `
-//       );
-//       if (current.next === null) {
-//         stringChain = stringChain.concat(null);
-//       }
-//       current = current.next;
-//     }
-//     // console.log(n)
-//     return stringChain;
-//   };
-
-//   return {
-//     prepend,
-//     append,
-//     toString,
-//     size,
-//     head,
-//     tail,
-//     at,
-//     pop,
-//     contains,
-//     find,
-//     insertAt,
-//     remove,
-//   };
-// };
-
-// const node = (value = null, next = null) => {
-//   return { value, next };
-// };
-
 const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67,66, 325, 6345];
 const biggerArray = [44, 3, 40, 4, 82, 38, 17, 91, 10, 33, 89, 11, 48, 39, 58, 88, 76, 31, 73, 46, 98,9,11, 12,16]
 const bst = new Tree(biggerArray);
@@ -516,6 +360,7 @@ const binTree = new Tree(biggerArray)
 
 
 prettyPrintBorders(bst.root);
+console.log(bst.isBalanced())
 // bst.deleteItem(324)
 // bst.deleteItem(4)
 // bst.deleteItem(73)
@@ -554,11 +399,11 @@ prettyPrintBorders(bst.root);
 //     return node.data
 // }))
 // console.log(`====================*2--------------------`)
-// console.log(bst.postOrderForEach(node =>{
+// console.log(bst.preOrderForEach(node =>{
 //     return node.data
 // }))
 // console.log(bst.depth(11))
-console.log(bst.height(12))
+// console.log(bst.height(12))
 
 
 // console.log(bst.postOrderForEach(node =>{
@@ -568,6 +413,10 @@ console.log(bst.height(12))
 bst.deleteItem(38)
 bst.deleteItem(31)
 
+
+
+console.log(bst.isBalanced())
+
 // console.log(bst.levelOrderForEach())
 
 // // const removeSubRoot = (() => {
@@ -575,12 +424,12 @@ bst.deleteItem(31)
 // //     bst.deleteItem(12)
 // // })()
 
-bst.deleteItem(73)
+// bst.deleteItem(73)
 
-prettyPrintBorders(bst.root);
-console.log(bst.height(12));
-console.log(bst.height(76));
-console.log(bst.height(88))
+// prettyPrintBorders(bst.root);
+// console.log(bst.height(12));
+// console.log(bst.height(76));
+// console.log(bst.height(88))
 // console.log(bst.levelOrderForEach())
 
 // console.log(bst.find(76))
