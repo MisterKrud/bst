@@ -17,10 +17,11 @@ class Tree {
   constructor(arr) {
     this.arr = this.arrayCleaner(arr);
     this.root = buildTree(this.arr);
-    this.list = linkedList()
+
   }
 
 #parent = null;
+#n = 0
 
   arrayCleaner(array) {
     if (array === null || array === undefined) array = [];
@@ -61,14 +62,13 @@ class Tree {
   }
 
   deleteItem(value) {
-    let currentNode = this.root;
-    let parentNode 
+    
 
     //Delete node if leaf
 
     const nodeValue = this.find(value)
-    currentNode = nodeValue.currentNode
-    parentNode = nodeValue.parentNode
+    let currentNode = nodeValue.currentNode
+    let parentNode = nodeValue.parentNode
     if (currentNode.left === null && currentNode.right === null) {
       if (parentNode.left === currentNode) {
         parentNode.left = null;
@@ -134,29 +134,30 @@ class Tree {
     prettyPrintBorders(this.root);
   }
 
-  find(value) {
-    let currentNode = this.root;
-    let parentNode = this.#parent
-
+  find(value, currentNode = this.root) {
+  this.#n= 0
+ let parentNode
      try {while (currentNode.data !== value) {
 
         if (value < currentNode.data) {
           parentNode = currentNode
           currentNode = currentNode.left;
+          this.#n++
         } else if (value > currentNode.data) {
           parentNode = currentNode
           currentNode = currentNode.right;
+          this.#n++
         }    
       }
     } catch { return (`${value} not found in tree`)}
-    
+
     return {currentNode, parentNode}
   }
   
-  levelOrderForEach(callback){
-    prettyPrintBorders(this.root)
-        let current = this.root;
-    const queueArray = [current]
+  levelOrderForEach(callback, node = this.root){
+    // prettyPrintBorders(node)
+        
+    const queueArray = [node]
 
     if(callback === undefined){
         throw new Error ("Argument must contain a function")
@@ -165,7 +166,8 @@ class Tree {
         while(queueArray.length>=1){
      
 
-        console.log(callback(queueArray[0]))
+      
+     callback(queueArray[0])
        if(queueArray[0].left !== null && queueArray[0].right !== null){
         queueArray.push(queueArray[0].left, queueArray[0].right);
        
@@ -178,14 +180,12 @@ class Tree {
        }
         
          queueArray.shift(queueArray[0])
-        
+    
         }
 
 
        
-// console.log(queueArray)
-//        console.log(this.list.toString())
-//        console.log(this.list.size())
+
     
   }
 }
@@ -244,6 +244,30 @@ inOrderForEach(callback, node = this.root){
 
 }
 
+
+height(value, node = this.find(value).currentNode){
+ 
+  let h =0
+ 
+  
+ this.levelOrderForEach(item => {
+ let d = this.depth(item.data, node)
+if(h<d){
+    h=d
+  }
+
+  
+
+  }, node)
+  return h
+}
+
+depth(value, node = this.root){
+this.find(value, node)
+
+return this.#n
+}
+
 }
 
 
@@ -284,177 +308,177 @@ const prettyPrintBorders = (node, prefix = "", isLeft = true) => {
 
 
 
-const linkedList = () => {
-  let n = 0;
+// const linkedList = () => {
+//   let n = 0;
 
-  let preNode = node();
+//   let preNode = node();
 
-  const append = (value) => {
-    const newNode = node(value);
-    newNode.index = n;
-    const current = iterate();
+//   const append = (value) => {
+//     const newNode = node(value);
+//     newNode.index = n;
+//     const current = iterate();
 
-    if (current.next === null) {
-      current.next = newNode;
-    }
-    n++;
-    return newNode;
-  };
+//     if (current.next === null) {
+//       current.next = newNode;
+//     }
+//     n++;
+//     return newNode;
+//   };
 
-  const iterate = () => {
-    let current = preNode;
-    while (current.next) {
-      current = current.next;
-    }
-    return current;
-  };
-
-
-  const prepend = (value) => {
-    insertAt(value, 0);
-  };
+//   const iterate = () => {
+//     let current = preNode;
+//     while (current.next) {
+//       current = current.next;
+//     }
+//     return current;
+//   };
 
 
-  const insertAt = (value, index) => {
-    const newNode = node(value);
-    newNode.index = index;
-    const rightNode = at(index);
-    let leftNode = at(index - 1);
-    if (leftNode == null) {
-      leftNode = preNode;
-    }
-    let current = newNode;
-
-    leftNode.next = newNode;
-    newNode.next = rightNode;
-
-    while (current.next) {
-      current = current.next;
-      current.index++;
-    }
-    n++
-  };
+//   const prepend = (value) => {
+//     insertAt(value, 0);
+//   };
 
 
-  const size = () => n;
+//   const insertAt = (value, index) => {
+//     const newNode = node(value);
+//     newNode.index = index;
+//     const rightNode = at(index);
+//     let leftNode = at(index - 1);
+//     if (leftNode == null) {
+//       leftNode = preNode;
+//     }
+//     let current = newNode;
+
+//     leftNode.next = newNode;
+//     newNode.next = rightNode;
+
+//     while (current.next) {
+//       current = current.next;
+//       current.index++;
+//     }
+//     n++
+//   };
 
 
-  const head = () => {
-    const headNode = preNode.next;
-    return headNode.value;
-  };
+//   const size = () => n;
 
 
-  const tail = () => {
-    const current = iterate();
-    if (current.next === null) {
-      const tailNode = current;
-      return tailNode;
-    }
-  };
+//   const head = () => {
+//     const headNode = preNode.next;
+//     return headNode.value;
+//   };
+
+
+//   const tail = () => {
+//     const current = iterate();
+//     if (current.next === null) {
+//       const tailNode = current;
+//       return tailNode;
+//     }
+//   };
 
   
-  const at = (index) => {
-    let current = preNode;
-    while (current.next) {
-      current = current.next;
-      if (current.index === index) {
-        // const atNode = current;
-        return current;
-      }
-    }
-  };
+//   const at = (index) => {
+//     let current = preNode;
+//     while (current.next) {
+//       current = current.next;
+//       if (current.index === index) {
+//         // const atNode = current;
+//         return current;
+//       }
+//     }
+//   };
 
 
-  const pop = () =>{
-    remove(n)
-  }
+//   const pop = () =>{
+//     remove(n)
+//   }
 
 
-  const remove = (index) => {
-    if(index<0 ||index >n) return null
-    let leftNode = at(index - 1);
-    let rightNode = at(index + 1);
-    if (index != n && index !=0) {
+//   const remove = (index) => {
+//     if(index<0 ||index >n) return null
+//     let leftNode = at(index - 1);
+//     let rightNode = at(index + 1);
+//     if (index != n && index !=0) {
       
-      console.log(`index: ${index}`);
-      leftNode.next = rightNode;
+//       console.log(`index: ${index}`);
+//       leftNode.next = rightNode;
       
-    } else if(index===0){
-      preNode.next = rightNode
-    }
-    else if(index===n) {
-      leftNode.next = null;
+//     } else if(index===0){
+//       preNode.next = rightNode
+//     }
+//     else if(index===n) {
+//       leftNode.next = null;
      
-    }
-    let current = rightNode;
-      while (current) {
-        current.index = current.index - 1;
-        current = current.next;
+//     }
+//     let current = rightNode;
+//       while (current) {
+//         current.index = current.index - 1;
+//         current = current.next;
       
-    }
-    n--
-  };
+//     }
+//     n--
+//   };
 
-  const contains = (value) => {
-    let current = preNode;
-    while (current.next) {
-      current = current.next;
-      if (current.value === value) {
-        return true;
-      }
-    }
-    return false;
-  };
+//   const contains = (value) => {
+//     let current = preNode;
+//     while (current.next) {
+//       current = current.next;
+//       if (current.value === value) {
+//         return true;
+//       }
+//     }
+//     return false;
+//   };
 
-  const find = (value) => {
-    let current = preNode;
-    while (current.next) {
-      current = current.next;
-      if (current.value === value) {
-        const matchingNode = current;
-        return matchingNode.index;
-      }
-    }
-    return null;
-  };
+//   const find = (value) => {
+//     let current = preNode;
+//     while (current.next) {
+//       current = current.next;
+//       if (current.value === value) {
+//         const matchingNode = current;
+//         return matchingNode.index;
+//       }
+//     }
+//     return null;
+//   };
 
-  const toString = () => {
-    let stringChain = "";
-    let current = preNode.next;
-    while (current) {
-      let nodeValue = current.value;
-      stringChain = stringChain.concat(
-        `( ${nodeValue} ) -> `
-      );
-      if (current.next === null) {
-        stringChain = stringChain.concat(null);
-      }
-      current = current.next;
-    }
-    // console.log(n)
-    return stringChain;
-  };
+//   const toString = () => {
+//     let stringChain = "";
+//     let current = preNode.next;
+//     while (current) {
+//       let nodeValue = current.value;
+//       stringChain = stringChain.concat(
+//         `( ${nodeValue} ) -> `
+//       );
+//       if (current.next === null) {
+//         stringChain = stringChain.concat(null);
+//       }
+//       current = current.next;
+//     }
+//     // console.log(n)
+//     return stringChain;
+//   };
 
-  return {
-    prepend,
-    append,
-    toString,
-    size,
-    head,
-    tail,
-    at,
-    pop,
-    contains,
-    find,
-    insertAt,
-    remove,
-  };
-};
+//   return {
+//     prepend,
+//     append,
+//     toString,
+//     size,
+//     head,
+//     tail,
+//     at,
+//     pop,
+//     contains,
+//     find,
+//     insertAt,
+//     remove,
+//   };
+// };
 
-const node = (value = null, next = null) => {
-  return { value, next };
-};
+// const node = (value = null, next = null) => {
+//   return { value, next };
+// };
 
 const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67,66, 325, 6345];
 const biggerArray = [44, 3, 40, 4, 82, 38, 17, 91, 10, 33, 89, 11, 48, 39, 58, 88, 76, 31, 73, 46, 98,9,11, 12,16]
@@ -485,7 +509,10 @@ const binTree = new Tree(biggerArray)
 // bst.deleteItem(7)
 // // blankTree.deleteItem(6)
 // prettyPrintBorders(bst.root);
-// console.log(bst.levelOrderForEach())
+// console.log(bst.levelOrderForEach(node => {
+//   return node.data
+// }
+// ))
 
 
 prettyPrintBorders(bst.root);
@@ -530,15 +557,16 @@ prettyPrintBorders(bst.root);
 // console.log(bst.postOrderForEach(node =>{
 //     return node.data
 // }))
-console.log(bst.inOrderForEach())
+// console.log(bst.depth(11))
+console.log(bst.height(12))
 
 
 // console.log(bst.postOrderForEach(node =>{
 //  return   node.data*2
     
 // }))
-// bst.deleteItem(38)
-// bst.deleteItem(31)
+bst.deleteItem(38)
+bst.deleteItem(31)
 
 // console.log(bst.levelOrderForEach())
 
@@ -547,9 +575,12 @@ console.log(bst.inOrderForEach())
 // //     bst.deleteItem(12)
 // // })()
 
-// bst.deleteItem(73)
-// // bst.deleteItem(39)
+bst.deleteItem(73)
 
+prettyPrintBorders(bst.root);
+console.log(bst.height(12));
+console.log(bst.height(76));
+console.log(bst.height(88))
 // console.log(bst.levelOrderForEach())
 
 // console.log(bst.find(76))
